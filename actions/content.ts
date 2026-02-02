@@ -1,6 +1,16 @@
+'use server'
+
 import { prisma } from './db'
 
-export async function getContent() {
+export type ContentType = {
+  siteTitle: string
+  hero: { subtitle: string; video: string }
+  services: { id: number; title: string; description: string }[]
+  teamNames: string[]
+  contact: { email: string; phone: string }
+}
+
+export async function getContent(): Promise<ContentType> {
   const row = await prisma.siteContent.findFirst()
   if (!row || !row.data || Object.keys(row.data as object).length === 0) {
     return {
@@ -15,7 +25,7 @@ export async function getContent() {
       contact: { email: 'hello@example.com', phone: '+10000000000' }
     }
   }
-  return row.data
+  return row.data as ContentType
 }
 
 export async function setContent(data: any) {

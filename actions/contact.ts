@@ -1,3 +1,5 @@
+'use server'
+
 import { prisma } from './db'
 
 let sendgrid: any = null
@@ -15,7 +17,7 @@ try {
   console.log('Twilio not installed, SMS sending will be disabled')
 }
 
-export async function sendContact(payload: { name: string; email: string; message: string; phone?: string }) {
+export async function sendContactAction(payload: { name: string; email: string; message: string; phone?: string }) {
   const { name, email, message, phone } = payload
   const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY
   if (SENDGRID_API_KEY && sendgrid) {

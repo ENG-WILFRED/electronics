@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { sendContactAction } from '@/actions/contact'
 
 type Form = { name: string; email: string; message: string; phone?: string }
 
@@ -11,13 +12,13 @@ export default function Contact() {
   async function submit(e: React.FormEvent) {
     e.preventDefault()
     setStatus('sending')
-    const res = await fetch('/api/contact', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(form)
-    })
-    const j = await res.json()
-    setStatus(j.ok ? 'sent' : 'error')
+    try {
+      await sendContactAction(form)
+      setStatus('sent')
+    } catch (err) {
+      console.error(err)
+      setStatus('error')
+    }
   }
 
   return (

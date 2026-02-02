@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { loginAction } from '@/actions/login'
 
 export default function Login() {
   const [form, setForm] = useState({ user: '', pass: '' })
@@ -9,9 +10,8 @@ export default function Login() {
 
   async function submit(e: React.FormEvent) {
     e.preventDefault()
-    const res = await fetch('/api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) })
-    const j = await res.json()
-    if (j.ok) router.push('/admin/dashboard')
+    const result = await loginAction(form.user, form.pass)
+    if (result.ok) router.push('/admin/dashboard')
     else alert('Login failed')
   }
 

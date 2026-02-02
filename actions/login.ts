@@ -1,6 +1,9 @@
+'use server'
+
 import { serialize } from 'cookie'
 import { prisma } from './db'
 import bcrypt from 'bcryptjs'
+import { cookies } from 'next/headers'
 
 export async function checkAdmin(user: string, pass: string) {
   // prefer DB-stored admin
@@ -13,8 +16,19 @@ export async function checkAdmin(user: string, pass: string) {
   return user === ADMIN_USER && pass === ADMIN_PASS
 }
 
-export function createAdminCookie() {
-  return serialize('admin', '1', { path: '/', httpOnly: true, sameSite: 'lax' })
+export async function loginAction(user: string, pass: string) {
+  const isValid = await checkAdmin(user, pass)
+  if (isValid) {
+    const cookieStore = await cookies()
+    cookieStore.set('admin', '1', { path: '/', httpOnly: true, sameSite: 'lax' })
+    return { ok: true }
+  }
+  return { ok: false }
+}
+
+export async function checkAuthAction() {
+  const cookieStore = await cookies()
+  return { ok: !!cookieStore.get('admin') }
 }
 
 export async function ensureAdminFromEnv() {
