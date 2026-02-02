@@ -1,12 +1,29 @@
-import { useState } from 'react'
-import { useRouter } from 'next/router'
-import { getContent } from '../../actions/content'
-import type { GetServerSideProps } from 'next'
+'use client'
 
-export default function Dashboard({ initial }: { initial: any }) {
-  const [content, setContent] = useState(initial)
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
+
+export default function Dashboard() {
+  const [content, setContent] = useState<any>(null)
   const [saving, setSaving] = useState(false)
   const router = useRouter()
+  const searchParams = useSearchParams()
+
+  useEffect(() => {
+    async function checkAuth() {
+      const isAuthed = await fetch('/api/auth-check').then(r => r.json()).then(d => d.ok).catch(() => false)
+      if (!isAuthed) {
+        router.push('/admin/login')
+        return
+      }
+      const data = await fetch('/api/content').then(r => r.json())
+      setContent(data)
+    }
+    checkAuth()
+  }, [router])
+
+  if (!content) return <div className="p-8">Loading...</div>
 
   async function save() {
     setSaving(true)
@@ -55,13 +72,4 @@ export default function Dashboard({ initial }: { initial: any }) {
       </div>
     </div>
   )
-}
-
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const cookie = req.headers.cookie || ''
-  if (!cookie.includes('admin=1')) {
-    return { redirect: { destination: '/admin/login', permanent: false } }
-  }
-  const content = await getContent()
-  return { props: { initial: content } }
 }

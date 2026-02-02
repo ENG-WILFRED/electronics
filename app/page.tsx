@@ -1,5 +1,4 @@
-import { GetStaticProps } from 'next'
-import { getContent } from '../actions/content'
+import { getContent } from '@/actions/content'
 
 type Service = { id: number; title: string; description: string }
 type Content = {
@@ -10,7 +9,9 @@ type Content = {
   contact: { email: string; phone: string }
 }
 
-export default function Home({ content }: { content: Content }) {
+export default async function Home() {
+  const content: Content = await getContent()
+
   return (
     <div className="min-h-screen p-8">
       <header className="max-w-5xl mx-auto text-center mb-12">
@@ -59,9 +60,4 @@ export default function Home({ content }: { content: Content }) {
       </section>
     </div>
   )
-}
-
-export const getStaticProps: GetStaticProps = async () => {
-  const content = await getContent()
-  return { props: { content }, revalidate: 10 }
 }

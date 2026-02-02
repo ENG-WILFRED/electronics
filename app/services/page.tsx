@@ -1,9 +1,11 @@
-import { GetStaticProps } from 'next'
-import { getContent } from '../actions/content'
+import { getContent } from '@/actions/content'
 
 type Service = { id: number; title: string; description: string }
 
-export default function Services({ services }: { services: Service[] }) {
+export default async function Services() {
+  const content = await getContent()
+  const services: Service[] = content.services
+
   return (
     <div className="min-h-screen p-8">
       <div className="max-w-4xl mx-auto">
@@ -22,10 +24,4 @@ export default function Services({ services }: { services: Service[] }) {
       </div>
     </div>
   )
-}
-
-export const getStaticProps: GetStaticProps = async () => {
-  const content = await getContent()
-  const services = (content as { services: Service[] }).services ?? []
-  return { props: { services }, revalidate: 10 }
 }

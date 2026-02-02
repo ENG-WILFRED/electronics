@@ -1,4 +1,7 @@
+'use client'
+
 import { useState } from 'react'
+
 type Form = { name: string; email: string; message: string; phone?: string }
 
 export default function Contact() {
