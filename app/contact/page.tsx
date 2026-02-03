@@ -1,43 +1,199 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { sendContactAction } from '@/actions/contact'
+import { Section, Card } from '@/components/Section'
+import { getContent } from '@/actions/content'
 
-type Form = { name: string; email: string; message: string; phone?: string }
+type Form = { name: string; email: string; message: string; phone?: string; subject?: string; company?: string }
 
 export default function Contact() {
-  const [form, setForm] = useState<Form>({ name: '', email: '', message: '', phone: '' })
+  const [form, setForm] = useState<Form>({ name: '', email: '', message: '', phone: '', subject: '', company: '' })
   const [status, setStatus] = useState<string | null>(null)
+  const [content, setContent] = useState<any>(null)
+
+  useEffect(() => {
+    getContent().then(setContent).catch(console.error)
+  }, [])
 
   async function submit(e: React.FormEvent) {
     e.preventDefault()
+    if (!form.name || !form.email || !form.message) {
+      alert('Please fill in all required fields')
+      return
+    }
     setStatus('sending')
     try {
       await sendContactAction(form)
       setStatus('sent')
+      setForm({ name: '', email: '', message: '', phone: '', subject: '', company: '' })
+      setTimeout(() => setStatus(null), 5000)
     } catch (err) {
       console.error(err)
       setStatus('error')
     }
   }
 
+  if (!content) return <div className="p-8">Loading...</div>
+
   return (
-    <div className="min-h-screen p-8">
-      <div className="max-w-3xl mx-auto card">
-        <h1 className="text-2xl font-bold mb-4">Contact Us</h1>
-        <form onSubmit={submit} className="space-y-4">
-          <input value={form.name} onChange={e => setForm({...form, name: e.target.value})} placeholder="Name" className="w-full p-2 border rounded" />
-          <input value={form.email} onChange={e => setForm({...form, email: e.target.value})} placeholder="Email" className="w-full p-2 border rounded" />
-          <input value={form.phone} onChange={e => setForm({...form, phone: e.target.value})} placeholder="Phone (for SMS)" className="w-full p-2 border rounded" />
-          <textarea value={form.message} onChange={e => setForm({...form, message: e.target.value})} placeholder="Message" className="w-full p-2 border rounded h-32" />
-          <div>
-            <button className="btn btn-primary" type="submit">Send</button>
-            {status === 'sending' && <span className="ml-3">Sending…</span>}
-            {status === 'sent' && <span className="ml-3 text-green-600">Sent</span>}
-            {status === 'error' && <span className="ml-3 text-red-600">Error sending</span>}
+    <div className="min-h-screen bg-gray-50">
+      {/* HERO */}
+      <header className="bg-white border-b">
+        <div className="max-w-6xl mx-auto px-6 py-16 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">Get In Touch</h1>
+          <p className="text-xl text-gray-600">
+            We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+          </p>
+        </div>
+      </header>
+
+      {/* CONTACT FORM & INFO */}
+      <Section>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* FORM */}
+          <div className="bg-white p-8 rounded-lg shadow-sm">
+            <h2 className="text-2xl font-bold mb-6">Send us a Message</h2>
+            <form onSubmit={submit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-semibold mb-2">Name *</label>
+                <input
+                  required
+                  value={form.name}
+                  onChange={e => setForm({...form, name: e.target.value})}
+                  placeholder="Your full name"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold mb-2">Company</label>
+                <input
+                  value={form.company}
+                  onChange={e => setForm({...form, company: e.target.value})}
+                  placeholder="Your company (optional)"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold mb-2">Email *</label>
+                <input
+                  required
+                  type="email"
+                  value={form.email}
+                  onChange={e => setForm({...form, email: e.target.value})}
+                  placeholder="your.email@company.com"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold mb-2">Phone</label>
+                <input
+                  value={form.phone}
+                  onChange={e => setForm({...form, phone: e.target.value})}
+                  placeholder="+1 (555) 000-0000"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold mb-2">Subject</label>
+                <input
+                  value={form.subject}
+                  onChange={e => setForm({...form, subject: e.target.value})}
+                  placeholder="Project inquiry, support, etc."
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold mb-2">Message *</label>
+                <textarea
+                  required
+                  value={form.message}
+                  onChange={e => setForm({...form, message: e.target.value})}
+                  placeholder="Tell us about your project or question..."
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 h-32 resize-none"
+                />
+              </div>
+
+              <button className="btn btn-primary w-full" type="submit" disabled={status === 'sending'}>
+                {status === 'sending' ? 'Sending...' : 'Send Message'}
+              </button>
+
+              {status === 'sent' && (
+                <div className="p-4 bg-green-50 border border-green-200 text-green-700 rounded-lg">
+                  ✓ Message sent successfully! We'll get back to you soon.
+                </div>
+              )}
+              {status === 'error' && (
+                <div className="p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg">
+                  ✗ Error sending message. Please try again.
+                </div>
+              )}
+            </form>
           </div>
-        </form>
-      </div>
+
+          {/* INFO */}
+          <div className="space-y-6">
+            <Card>
+              <h3 className="text-xl font-semibold mb-3">📧 Email</h3>
+              <a href={`mailto:${content.contact.email}`} className="text-blue-600 hover:underline font-semibold">
+                {content.contact.email}
+              </a>
+              <p className="text-sm text-gray-600 mt-2">For general inquiries and project information</p>
+            </Card>
+
+            <Card>
+              <h3 className="text-xl font-semibold mb-3">📞 Phone</h3>
+              <a href={`tel:${content.contact.phone}`} className="text-blue-600 hover:underline font-semibold">
+                {content.contact.phone}
+              </a>
+              <p className="text-sm text-gray-600 mt-2">Call or text us during business hours</p>
+            </Card>
+
+            <Card>
+              <h3 className="text-xl font-semibold mb-3">📍 Address</h3>
+              <p className="text-gray-700 font-semibold">{content.contact.address}</p>
+              <p className="text-sm text-gray-600 mt-2">Visit our facilities by appointment</p>
+            </Card>
+
+            <Card>
+              <h3 className="text-xl font-semibold mb-3">⏰ Response Time</h3>
+              <p className="text-gray-700">
+                We typically respond within <span className="font-semibold">24 hours</span> during business days.
+              </p>
+            </Card>
+          </div>
+        </div>
+      </Section>
+
+      {/* FAQ */}
+      <Section dark>
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-10">Frequently Asked Questions</h2>
+          <div className="space-y-6">
+            <div>
+              <h4 className="font-semibold text-lg mb-2">How quickly can you start a project?</h4>
+              <p className="text-gray-400">We typically have availability to start new projects within 1-2 weeks. Rush engagements can be accommodated for urgent needs.</p>
+            </div>
+            <div>
+              <h4 className="font-semibold text-lg mb-2">What industries do you serve?</h4>
+              <p className="text-gray-400">We work across aerospace, industrial automation, IoT, consumer electronics, medical devices, and custom embedded systems.</p>
+            </div>
+            <div>
+              <h4 className="font-semibold text-lg mb-2">Do you offer remote collaboration?</h4>
+              <p className="text-gray-400">Yes! We support hybrid and fully remote projects using industry-standard tools and communication platforms.</p>
+            </div>
+            <div>
+              <h4 className="font-semibold text-lg mb-2">What is your typical project size?</h4>
+              <p className="text-gray-400">We handle everything from small consulting engagements to large-scale multi-month development projects.</p>
+            </div>
+          </div>
+        </div>
+      </Section>
     </div>
   )
 }
