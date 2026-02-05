@@ -13,13 +13,13 @@ export default function Logo({ size = 'medium', className = '' }: LogoProps) {
   }
 
   return (
-    <div className={`${sizeMap[size]} ${className} flex items-center justify-center`}>
+    <div className={`${sizeMap[size]} ${className} flex items-center justify-center flex-shrink-0 rounded-full overflow-hidden`}>
       <Image
         src="/logo.jpeg"
         alt="Electronics & Services Logo"
         width={64}
         height={64}
-        className="w-full h-full object-cover rounded-full"
+        className="w-full h-full object-cover"
       />
     </div>
   )

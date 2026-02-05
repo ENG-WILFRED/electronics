@@ -42,7 +42,7 @@ export default function Contact() {
       <nav className="bg-magna-cream/50 backdrop-blur-lg border-b border-magna-red/10 sticky top-0 z-50">
         <div className="w-full px-4 md:px-8 lg:px-20 py-4 flex items-center justify-between">
           <a href="/" className="text-xl md:text-2xl font-bold text-magna-red hover:text-magna-orange transition">
-            E&S
+            Electrical & Services
           </a>
           <a href="/" className="btn btn-outline px-4 md:px-6 py-2 text-sm md:text-base">← Back</a>
         </div>
@@ -153,33 +153,40 @@ export default function Contact() {
 
           {/* INFO */}
           <div className="space-y-6">
-            <Card className="bg-gradient-to-br from-magna-orange/10 to-magna-red/5 rounded-4xl shadow-lg hover:shadow-xl transition">
-              <h3 className="text-2xl font-semibold mb-4 text-magna-red">📧 Email</h3>
-              <a href={`mailto:${content.contact.email}`} className="text-magna-red hover:text-magna-orange font-semibold text-lg transition">
-                {content.contact.email}
-              </a>
-              <p className="text-sm text-magna-black/60 mt-3">For general inquiries and project information</p>
+            <h2 className="text-3xl font-bold text-magna-red mb-8">Contact Information</h2>
+            
+            <Card className="bg-gradient-to-br from-magna-orange/10 to-magna-red/5">
+              <div className="flex items-center gap-3">
+                <span className="text-lg font-semibold text-magna-red">Email</span>
+                <a href={`mailto:${content.contact.email}`} className="text-magna-red hover:text-magna-orange font-semibold transition">
+                  {content.contact.email}
+                </a>
+              </div>
             </Card>
 
-            <Card className="bg-gradient-to-br from-magna-red/10 to-magna-orange/5 rounded-4xl shadow-lg hover:shadow-xl transition">
-              <h3 className="text-2xl font-semibold mb-4 text-magna-red">📞 Phone</h3>
-              <a href={`tel:${content.contact.phone}`} className="text-magna-red hover:text-magna-orange font-semibold text-lg transition">
-                {content.contact.phone}
-              </a>
-              <p className="text-sm text-magna-black/60 mt-3">Call or text us during business hours</p>
+            <Card className="bg-gradient-to-br from-magna-red/10 to-magna-orange/5">
+              <div className="flex items-center gap-3">
+                <span className="text-lg font-semibold text-magna-red">Phone</span>
+                <a href={`tel:${content.contact.phone}`} className="text-magna-red hover:text-magna-orange font-semibold transition">
+                  {content.contact.phone}
+                </a>
+              </div>
             </Card>
 
-            <Card className="bg-gradient-to-br from-magna-orange/10 to-magna-red/5 rounded-4xl shadow-lg hover:shadow-xl transition">
-              <h3 className="text-2xl font-semibold mb-4 text-magna-red">📍 Address</h3>
-              <p className="text-magna-black font-semibold text-base">{content.contact.address}</p>
-              <p className="text-sm text-magna-black/60 mt-3">Visit our facilities by appointment</p>
+            <Card className="bg-gradient-to-br from-magna-orange/10 to-magna-red/5">
+              <div className="space-y-2">
+                <h3 className="text-lg font-semibold text-magna-red">Address</h3>
+                <p className="text-magna-black">{content.contact.address}</p>
+              </div>
             </Card>
 
-            <Card className="bg-gradient-to-br from-magna-red/10 to-magna-orange/5 rounded-4xl shadow-lg hover:shadow-xl transition">
-              <h3 className="text-2xl font-semibold mb-4 text-magna-red">⏰ Response Time</h3>
-              <p className="text-magna-black text-base">
-                We typically respond within <span className="font-semibold text-magna-red">24 hours</span> during business days.
-              </p>
+            <Card className="bg-gradient-to-br from-magna-red/10 to-magna-orange/5">
+              <div className="space-y-2">
+                <h3 className="text-lg font-semibold text-magna-red">Response Time</h3>
+                <p className="text-magna-black">
+                  We typically respond within <span className="font-semibold text-magna-red">24 hours</span> during business days.
+                </p>
+              </div>
             </Card>
           </div>
         </div>
