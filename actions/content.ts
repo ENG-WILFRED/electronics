@@ -10,6 +10,16 @@ export type ContentType = {
   testimonials: { name: string; company: string; message: string }[]
   stats: { projects: number; clients: number; years: number }
   contact: { email: string; phone: string; address: string }
+  company: {
+    name: string
+    founded: number
+    employees: number
+    headquarters: string
+    description: string
+    expertise: string[]
+    certifications: string[]
+    achievements: string[]
+  }
 }
 
 export async function getContent(): Promise<ContentType> {
@@ -37,7 +47,17 @@ export async function getContent(): Promise<ContentType> {
         { name: 'Sarah Johnson', company: 'Manufacturing Solutions', message: 'Their PCB design expertise saved us months of development time. Highly recommended.' }
       ],
       stats: { projects: 150, clients: 45, years: 12 },
-      contact: { email: 'hello@electronics-systems.com', phone: '+1-555-0123', address: '123 Tech Street, Silicon Valley, CA 94025' }
+      contact: { email: 'hello@electronics-systems.com', phone: '+1-555-0123', address: '123 Tech Street, Silicon Valley, CA 94025' },
+      company: {
+        name: 'Electronics & Systems Inc.',
+        founded: 2012,
+        employees: 12,
+        headquarters: 'Silicon Valley, CA',
+        description: 'Leading provider of electronics engineering services with expertise in PCB design, embedded firmware, and electronics repair.',
+        expertise: ['High-speed PCB Design', 'Embedded Systems', 'Real-time OS Integration', 'Signal Integrity Analysis', 'Power Supply Design'],
+        certifications: ['ISO 9001:2015', 'IPC-A-610', 'ESD Protection Certified'],
+        achievements: ['150+ Projects Completed', '45+ Satisfied Clients', '12 Years Industry Experience']
+      }
     }
   }
   return row.data as ContentType

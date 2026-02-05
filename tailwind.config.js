@@ -1,29 +1,36 @@
-module.exports = {
+/** @type {import('tailwindcss').Config} */
+const config = {
   content: [
-    './pages/**/*.{js,jsx,ts,tsx}',
-    './components/**/*.{js,jsx,ts,tsx}',
+    './app/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './pages/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {
-      colors: {
-        primary: {
-          red: '#D7263D',
-          blue: '#0F52BA',
-          green: '#2ECC71',
-          black: '#0B0B0B',
-          white: '#FFFFFF'
-        }
+      animation: {
+        'fade-in': 'fadeIn 0.4s ease-in-out forwards',
+        'spin': 'spin 1s linear infinite',
       },
       keyframes: {
-        float: {
-          '0%,100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-8px)' },
-        }
+        fadeIn: {
+          '0%': { opacity: '0', transform: 'translateY(-10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
       },
-      animation: {
-        float: 'float 4s ease-in-out infinite',
-      }
+      colors: {
+        'magna-red': '#E70008',
+        'magna-orange': '#FF9940',
+        'magna-cream': '#F9E4AD',
+        'magna-black': '#000000',
+        // semantic aliases
+        'primary': '#E70008',
+        'secondary': '#FF9940',
+        'foreground': '#000000',
+        'background': '#F9E4AD'
+      },
     },
   },
   plugins: [],
-}
+};
+
+export default config;

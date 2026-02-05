@@ -1,14 +1,13 @@
 interface SectionProps {
   children: React.ReactNode
   className?: string
-  dark?: boolean
   centered?: boolean
 }
 
-export function Section({ children, className = '', dark = false, centered = false }: SectionProps) {
+export function Section({ children, className = '', centered = false }: SectionProps) {
   return (
-    <section className={`${dark ? 'bg-gray-900 text-gray-100' : 'bg-white'} ${className}`}>
-      <div className={`max-w-6xl mx-auto px-6 py-16 ${centered ? 'text-center' : ''}`}>
+    <section className={`w-full bg-magna-cream text-magna-black py-16 ${className}`}>
+      <div className={`w-full px-6 md:px-12 ${centered ? 'text-center' : ''}`}>
         {children}
       </div>
     </section>
@@ -24,8 +23,8 @@ interface SectionHeadingProps {
 export function SectionHeading({ children, subtitle, centered = true }: SectionHeadingProps) {
   return (
     <>
-      <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${centered ? 'text-center' : ''}`}>{children}</h2>
-      {subtitle && <p className={`text-gray-600 ${centered ? 'text-center max-w-2xl mx-auto' : ''} mb-10`}>{subtitle}</p>}
+      <h2 className={`text-3xl md:text-4xl font-bold mb-4 text-magna-black ${centered ? 'text-center' : ''}`}>{children}</h2>
+      {subtitle && <p className={`text-magna-black/70 ${centered ? 'text-center max-w-3xl mx-auto' : ''} mb-8`}>{subtitle}</p>}
     </>
   )
 }
@@ -38,7 +37,7 @@ interface CardProps {
 
 export function Card({ children, className = '', hover = true }: CardProps) {
   return (
-    <div className={`bg-white p-6 rounded-lg ${hover ? 'shadow-sm hover:shadow-md' : 'shadow-sm'} transition ${className}`}>
+    <div className={`p-6 rounded-4xl ${hover ? 'shadow-md hover:shadow-xl hover:scale-[1.02]' : 'shadow-md'} transition duration-200 ${className} bg-white border border-gray-200 text-magna-black`}>
       {children}
     </div>
   )
@@ -59,10 +58,10 @@ export function Grid({ children, cols = 3, gap = 'medium' }: GridProps) {
   }[cols]
 
   const gapClass = {
-    small: 'gap-4',
-    medium: 'gap-8',
-    large: 'gap-12'
+    small: 'gap-6',
+    medium: 'gap-10',
+    large: 'gap-16'
   }[gap]
 
-  return <div className={`grid ${colClass} ${gapClass}`}>{children}</div>
+  return <div className={`grid ${colClass} ${gapClass} w-full`}>{children}</div>
 }

@@ -2,13 +2,13 @@
 
 import { prisma } from './db'
 
-let sendgrid: any = null
+let nodemailer: any = null
 let Twilio: any = null
 
 try {
-  sendgrid = require('@sendgrid/mail')
-} catch {
-  console.log('SendGrid not installed, email sending will be disabled')
+  nodemailer = require('nodemailer')
+} catch (e) {
+  console.log('nodemailer not installed; SMTP email sending disabled')
 }
 
 try {
@@ -19,23 +19,40 @@ try {
 
 export async function sendContactAction(payload: { name: string; email: string; message: string; phone?: string }) {
   const { name, email, message, phone } = payload
-  const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY
-  if (SENDGRID_API_KEY && sendgrid) {
+
+  // Attempt SMTP send via nodemailer if configured
+  const SMTP_HOST = process.env.SMTP_HOST
+  const SMTP_PORT = process.env.SMTP_PORT
+  const SMTP_USER = process.env.SMTP_USER
+  const SMTP_PASS = process.env.SMTP_PASS
+  const SMTP_SECURE = process.env.SMTP_SECURE === 'true'
+
+  if (SMTP_HOST && nodemailer) {
     try {
-      sendgrid.setApiKey(SENDGRID_API_KEY)
-      await sendgrid.send({
-        to: process.env.CONTACT_EMAIL || 'hello@example.com',
-        from: process.env.FROM_EMAIL || 'no-reply@example.com',
+      const transporter = nodemailer.createTransport({
+        host: SMTP_HOST,
+        port: SMTP_PORT ? Number(SMTP_PORT) : 587,
+        secure: SMTP_SECURE || (SMTP_PORT ? Number(SMTP_PORT) === 465 : false),
+        auth: SMTP_USER ? { user: SMTP_USER, pass: SMTP_PASS } : undefined
+      })
+
+      const toAddress = process.env.CONTACT_EMAIL || process.env.FROM_EMAIL || 'hello@example.com'
+      const fromAddress = process.env.FROM_EMAIL || SMTP_USER || 'no-reply@example.com'
+
+      await transporter.sendMail({
+        to: toAddress,
+        from: fromAddress,
         subject: `Website contact from ${name}`,
         text: `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\n\n${message}`
       })
     } catch (e: any) {
-      console.error('SendGrid error', e?.message)
+      console.error('SMTP send error', e?.message || e)
     }
   } else {
-    console.log('Email not sent (SENDGRID_API_KEY not set or SendGrid not installed). Message:', { name, email, phone, message })
+    console.log('Email not sent (SMTP not configured or nodemailer not installed). Message:', { name, email, phone, message })
   }
 
+  // Twilio SMS (optional)
   const TW_SID = process.env.TWILIO_SID
   const TW_AUTH = process.env.TWILIO_AUTH_TOKEN
   const TW_FROM = process.env.TWILIO_FROM

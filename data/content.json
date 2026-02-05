@@ -1,14 +1,76 @@
 {
   "siteTitle": "Electronics & Systems",
   "hero": {
+    "tagline": "Professional Electronics Engineering Solutions",
     "subtitle": "Reliable electronics engineering and repair",
     "video": "https://player.vimeo.com/video/76979871"
   },
   "services": [
-    {"id":1,"title":"PCB Design","description":"Schematic capture, PCB layout, and prototyping."},
-    {"id":2,"title":"Embedded Firmware","description":"C/C++/RTOS firmware development for microcontrollers."},
-    {"id":3,"title":"Repair & Calibration","description":"Diagnostics, repair, and recalibration services."}
+    {"id":1,"title":"PCB Design","description":"Schematic capture, PCB layout, HDI design, and high-speed prototyping services."},
+    {"id":2,"title":"Embedded Firmware","description":"C/C++/RTOS firmware development for microcontrollers and embedded systems."},
+    {"id":3,"title":"Repair & Calibration","description":"Diagnostics, component-level repair, and recalibration services."},
+    {"id":4,"title":"Electronics Testing","description":"Comprehensive testing and validation for quality assurance."},
+    {"id":5,"title":"Design Optimization","description":"Performance tuning and optimization for power, thermal, and signal integrity."},
+    {"id":6,"title":"Technical Consulting","description":"Expert consultation for electronics projects and system architecture."}
   ],
-  "teamNames": ["Founder: Alex Morgan","Engineer: Priya Singh"],
-  "contact": {"email":"hello@example.com","phone":"+10000000000"}
+  "team": [
+    {"name":"Alex Morgan","role":"Founder & Lead Electronics Engineer"},
+    {"name":"Priya Singh","role":"Senior Firmware Engineer"},
+    {"name":"Michael Chen","role":"PCB Design Specialist"},
+    {"name":"Sarah Johnson","role":"Quality Assurance Engineer"},
+    {"name":"David Rodriguez","role":"Technical Support Lead"},
+    {"name":"Emma Wilson","role":"Project Manager"}
+  ],
+  "teamNames": ["Alex Morgan","Priya Singh","Michael Chen","Sarah Johnson","David Rodriguez","Emma Wilson"],
+  "stats": {
+    "projects": 250,
+    "clients": 85,
+    "years": 12
+  },
+  "testimonials": [
+    {
+      "name": "John Smith",
+      "company": "TechCorp Industries",
+      "message": "Exceptional quality and attention to detail. They delivered our PCB design ahead of schedule."
+    },
+    {
+      "name": "Lisa Anderson",
+      "company": "IoT Solutions Ltd",
+      "message": "Their firmware expertise saved us months of development time. Highly recommended!"
+    }
+  ],
+  "company": {
+    "name": "Electronics & Systems Inc.",
+    "founded": 2012,
+    "employees": 12,
+    "headquarters": "Silicon Valley, CA",
+    "description": "Leading provider of electronics engineering services with expertise in PCB design, embedded firmware, and electronics repair.",
+    "expertise": [
+      "High-speed PCB Design",
+      "Embedded Systems",
+      "Real-time OS Integration",
+      "Signal Integrity Analysis",
+      "Power Supply Design",
+      "Component-level Repair",
+      "IoT Solutions",
+      "Aerospace & Medical Devices"
+    ],
+    "certifications": [
+      "ISO 9001:2015",
+      "IPC-A-610",
+      "ESD Protection Certified"
+    ],
+    "achievements": [
+      "250+ Projects Completed",
+      "85+ Satisfied Clients",
+      "12 Years Industry Experience",
+      "24-Hour Response Time",
+      "99% Customer Satisfaction"
+    ]
+  },
+  "contact": {
+    "email":"hello@example.com",
+    "phone":"+1-800-ELECTRONICS",
+    "address":"123 Innovation Drive, Silicon Valley, CA 94025"
+  }
 }
